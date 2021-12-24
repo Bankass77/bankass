@@ -1,143 +1,186 @@
 package com.bankass.bankass.controller;
 
-import java.io.IOException;
+import java.util.List;
 
-import com.bankass.bankass.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
+
+import com.bankass.bankass.config.PropertiesConfig;
+import com.bankass.bankass.model.MenuItem;
+import com.bankass.bankass.service.FrameService;
+import com.bankass.bankass.service.MenuItemService;
+import com.bankass.bankass.support.FXMLController;
+import com.bankass.bankass.views.FrameGridDef;
+import com.bankass.bankass.views.FrameGridView;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.SingleSelectionModel;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import lombok.Data;
+import javafx.stage.Screen;
 
-
-@Data
+@FXMLController
 public class MainController {
+	private static String ADDITIONAL_TAB_TITLE = "     ";
+
+	@Autowired
+	private ApplicationContext context;
+
+	@Autowired
+	private PropertiesConfig config;
+
+	@Autowired
+	private MenuItemService menuItemService;
+
 	@FXML
-	private BorderPane rootBorderPane;
+	private VBox mainPanel;
 
-	public Product product = new Product();
-	public VBox drawerPane = new VBox();
+	@FXML
+	private SplitPane mainSplitPanel;
 
-	public static TabPane tabPane = new TabPane();
-
-	private static Tab firstTab = new Tab("New Tab");
+	@FXML
+	private TabPane tabPane;
 	
-	private static final Tab addNewTab = new Tab("+");
-	
-	public void setFirstTab(Tab firstTab) {
-		this.firstTab = firstTab;
-	}
+	TreeView<MenuItem> treeView;
 
-	public static Tab getFirstTab() {
-		return firstTab;
-	}
+	@FXML
+	private void initialize() {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		mainPanel.setPrefWidth(primaryScreenBounds.getWidth() * 0.8);
+		mainPanel.setPrefHeight(primaryScreenBounds.getHeight() * 0.8);
 
-	// ---set method for TabPane---
-	/*
-	 * public void setTabPane(TabPane tabPane) { MainController.tabPane = tabPane;
-	 * 
-	 * // System.out.println("Setter title:"+TabController.getTitle());
-	 * getTabPaneView(tabPane, addNewTab); tabPaneChangeListener(tabPane);
-	 * 
-	 * }
-	 */
-
-		public TabPane getTabPane() {
-			return tabPane;
+		if (config.getJavafxMainToolbar()) {
+			ToolBar toolbar = buildToolBar();
+			mainPanel.getChildren().add(1, toolbar);
 		}
 
-		public static Tab getAddNewTab() {
-			return addNewTab;
+		if (config.getJavafxMainTree()) {
+			MenuItem rootMenuItem = menuItemService.getMenuItemRoot();
+			TreeItem<MenuItem> rootNode = new TreeItem<>();
+			rootNode.setValue(rootMenuItem);
+			rootNode.setExpanded(rootMenuItem.getExpanded());
+			treeView = new TreeView<>();
+			treeView.setRoot(rootNode);
+			buildTreeItems(rootNode);
+			mainSplitPanel.getItems().add(0, treeView);
+			treeView.setOnKeyPressed(e -> {
+				if (e.getCode() == KeyCode.ENTER) {
+					onSelectItemAction(treeView);
+				}
+			});
+			treeView.setOnMouseClicked((event) -> {
+				if (event.getClickCount() == 2) {
+					onSelectItemAction(treeView);
+				}
+			});
 		}
 
-		/*
-		 * public void tabPaneChangeListener(TabPane tabpane) {
-		 * tabpane.getSelectionModel().selectedItemProperty().addListener(new
-		 * ChangeListener<Tab>() {
-		 * 
-		 * @Override public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab
-		 * newSelectedTab) { product.hideProductPane(); } }); }
-		 */
-		/*
-		 * public TabPane getTabPaneView(TabPane tabpane, Tab addNewTab) {
-		 * tabpane.getSelectionModel().selectedItemProperty().addListener(new
-		 * ChangeListener<Tab>() {
-		 * 
-		 * @Override
-		 * 
-		 * public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab
-		 * newSelectedTab) {
-		 * 
-		 * // Closeing tab if first index tab close and size will be the 2 //
-		 * https://docs.oracle.com/javase/8/javafx/api/index.html?javafx/scene/package-
-		 * summary.html
-		 * 
-		 * if (tabPane.getTabs().size() == 1) { Platform.exit(); }
-		 * 
-		 * // The current tab title is set the stage title
-		 * //MainClass.getStage().setTitle(tabPane.getSelectionModel().getSelectedItem()
-		 * .getText());
-		 * 
-		 * //The above line was just setting the name of window but according to the
-		 * requirement we // just set the fixed name of browser Jfx Browser
-		 * 
-		 * if (newSelectedTab == addNewTab) {
-		 * 
-		 * // ---------------New tab is created --------------------
-		 * 
-		 * Platform.runLater(new Runnable() {
-		 * 
-		 * @Override public void run() {
-		 * 
-		 * creatNewTab(tabpane, addNewTab);
-		 * 
-		 * } }); } } });
-		 * 
-		 * return tabpane;
-		 * 
-		 * }
-		 */
+	}
 
-		// end class
-		/*
-		 * public void creatNewTab(TabPane tabpane, Tab addNewTab) {
-		 * 
-		 * Tab tab = new Tab("New tab");
-		 * 
-		 * 
-		 * try {
-		 * tab.setContent(FXMLLoader.load(getClass().getResource(Main.FXMLS+"Tab.fxml"))
-		 * ); // tab.setText(TabController.getWebEngine().getTitle());
-		 * 
-		 * } catch (IOException e) { System.out.
-		 * println("Exception: New tab click but not working in TabPaneView Class"); }
-		 * 
-		 * tab.getStyleClass().addAll("tab-pane");
-		 * 
-		 * ObservableList<Tab> tabs = tabpane.getTabs();
-		 * 
-		 * Platform.runLater(new Runnable() {
-		 * 
-		 * @Override public void run() {
-		 * 
-		 * tabs.add(tabs.size() - 1, tab);
-		 * 
-		 * SingleSelectionModel<Tab> selectedTab = tabpane.getSelectionModel();
-		 * selectedTab.select(tab);
-		 * 
-		 * } });
-		 * 
-		 * }
-		 */
+	public void onWindowShownEvent() {
+		if (treeView != null) {
+			MultipleSelectionModel<TreeItem<MenuItem>> msm = treeView.getSelectionModel();
+			msm.select(treeView.getRoot());
+			treeView.requestFocus();
+		};
+	}
 
-		// end class
+
+	private void buildTreeItems(TreeItem<MenuItem> parentNode) {
+		Long parentId = -1l;
+		if (parentNode.getValue() != null) {
+			parentId = parentNode.getValue().getId();
+		}
+		List<MenuItem> menuItems = menuItemService.getMenuItemsByParent(parentId);
+		for (MenuItem item : menuItems) {
+			TreeItem<MenuItem> itemNode = new TreeItem<>();
+			itemNode.setValue(item);
+			itemNode.setExpanded(item.getExpanded());
+			if (!item.getImage().isEmpty()) {
+				itemNode.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/" + item.getImage()))));
+			}
+			parentNode.getChildren().add(itemNode);
+			buildTreeItems(itemNode);
+		}
+	}
+
+	private void onSelectItemAction(TreeView <MenuItem> treeView) {
+		TreeItem<MenuItem> item = treeView.getSelectionModel().getSelectedItem();
+		if (item == null)
+			return;
+		int tabIndex = findTabIndex(item.getValue().getValue());
+		if (tabIndex == -1) {
+			tabPane.getTabs().contains((Object) item.getValue());
+			showItemContent(item.getValue());
+		} else {
+			tabPane.getSelectionModel().select(tabIndex);
+		}
+	}
+
+	private void showItemContent(MenuItem menuItem) {
+		if (menuItem.getService() == null) {
+			return;
+		}
+
+		FrameGridView gridView = (FrameGridView) context.getBean(FrameGridView.class);
+		FrameGridController controller = (FrameGridController) context.getBean(FrameGridController.class);
+		gridView.setController(controller);
+
+		Tab tab = new Tab(menuItem.getValue() + ADDITIONAL_TAB_TITLE);
+		tab.setContent(gridView.getView());
+		tabPane.getTabs().add(tab);
+		tabPane.getSelectionModel().select(tabPane.getTabs().size() - 1);
+
+		FrameService frameService = (FrameService) context.getBean(menuItem.getService());
+		FrameGridDef frameGridDef = (FrameGridDef) context.getBean(menuItem.getGridDef());
+		controller.initializeGrid(frameService, frameGridDef);
+	}
+
+	private ToolBar buildToolBar() {
+		ToolBar toolbar = new ToolBar();
+		List<MenuItem> menuItems = menuItemService.getMenuItemsByParent(0l);
+		for (MenuItem item : menuItems) {
+			Button button = new Button();
+			button.setTooltip(new Tooltip(item.getValue()));
+			if (!item.getImage().isEmpty()) {
+				button.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/" + item.getImage()))));
+			}
+			button.setOnAction((event) -> { onToolBarButtonAction(item); });
+			toolbar.getItems().add(button);
+		}
+		return toolbar;
+	}
+
+	private void onToolBarButtonAction(MenuItem item) {
+		int tabIndex = findTabIndex(item.getValue());
+		if (tabIndex == -1) {
+			tabPane.getTabs().contains((Object) item.getValue());
+			showItemContent(item);
+		} else {
+			tabPane.getSelectionModel().select(tabIndex);
+		}
+	}
+	
+	private int findTabIndex(String title) {
+		for (int i = 0; i < tabPane.getTabs().size(); i++) {
+			Tab tab = tabPane.getTabs().get(i);
+			if (tab.getText().equals(title + ADDITIONAL_TAB_TITLE)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 }

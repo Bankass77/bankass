@@ -1,10 +1,14 @@
 package com.bankass.bankass.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SignUpController {
+public class SignUpController implements Initializable{
 	
 	@FXML
 	private Pane signUpPane;
@@ -38,5 +42,9 @@ public class SignUpController {
 	@FXML
 	private JFXButton backLoginView;
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+	}
 
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="595.0" prefWidth="841.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tiagohs.controller.ReportViewerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="595.0" prefWidth="841.0" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankass.bankass.controller.ReportViewerController">
    <children>
       <Pane layoutX="-9.0" prefHeight="52.0" prefWidth="859.0" style="-fx-background-color: #3F51B5;">
          <children>

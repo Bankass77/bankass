@@ -68,6 +68,9 @@ public class User  implements Serializable{
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name="phone")
+	 private String cellphone;
+	
 	@Column(name = "is_login")
 	private int isLogin;
 	
