@@ -15,7 +15,7 @@ public class SelectKeyComboBoxListener implements EventHandler<KeyEvent> {
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void handle(KeyEvent event) {
-		sb.delete(0, sb.length()); // TODO: save last typed keys
+		sb.delete(0, sb.length());
 		if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.UP || event.getCode() == KeyCode.TAB) {
 			return;
 		} else if (event.getCode() == KeyCode.BACK_SPACE && sb.length() > 0) {

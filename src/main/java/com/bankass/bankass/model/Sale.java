@@ -22,7 +22,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Entity
@@ -38,6 +40,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Getter
+@Setter
 public class Sale  implements Serializable{
 
 	/**
@@ -77,7 +81,7 @@ public class Sale  implements Serializable{
 	private double total;
 	
 	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Phone fone;
+	private Phone phone;
 	
 	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Client cliente;

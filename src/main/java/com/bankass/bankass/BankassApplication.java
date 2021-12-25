@@ -13,7 +13,7 @@ public class BankassApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BankassApplication.class, args);
-		Application.launch(StockManagement.class, args);
+		//Application.launch(StockManagement.class, args);
 	}
 
 }

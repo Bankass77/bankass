@@ -1,42 +1,60 @@
 package com.bankass.bankass;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.bankass.bankass.controller.MainController;
-
-import com.bankass.bankass.support.AbstractFxmlView;
-import com.bankass.bankass.support.GUIState;
-import com.bankass.bankass.support.PropertyReaderHelper;
-import com.bankass.bankass.views.MainView;
-
+import com.bankass.bankass.controller.LoginController;
+import com.bankass.bankass.controller.RootController;
+import com.bankass.bankass.model.Language;
+import com.bankass.bankass.model.User;
+import com.bankass.bankass.service.LanguageService;
+import com.bankass.bankass.service.UserService;
+import com.bankass.bankass.utils.I18N;
+import com.bankass.bankass.utils.WindowsUtils;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class StockManagement extends Application {
 
-	private static ConfigurableApplicationContext applicationContext;
-	private static List<Image> icons = new ArrayList<>();
+	public static ConfigurableApplicationContext applicationContext;
+	public static I18N i18n;
+	public static HostServices hostServices;
+
 	
+	private UserService userService;
+	private LanguageService languageService;
+
 	@Override
 	public void start(Stage stage) throws Exception {
-		GUIState.setStage(stage);
-		GUIState.setHostServices(this.getHostServices());
-		showInitialView();
+
+		hostServices = this.getHostServices();
+
+		userService.finUserSignIn(e -> {
+			try {
+				User user = (User) e.getSource().getValue();
+				
+				log.debug("User is :{}", user);
+
+				if (user == null) {
+					WindowsUtils.openNewWindow(stage, LoginController.PATH_FXML,
+							i18n.getString(LoginController.LOGIN_TITLE_KEY), LoginController.PATH_ICON, null);
+				} else {
+					WindowsUtils.openNewWindow(stage, RootController.PATH_FXML,
+							i18n.getString(RootController.ROOT_TITLE_KEY), RootController.PATH_ICON, null);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}, null);
 		applicationContext.publishEvent(new StageReadyEvent(stage));
 
 	}
@@ -46,74 +64,32 @@ public class StockManagement extends Application {
 	 */
 	@Override
 	public void init() {
-		SpringApplicationBuilder builder = new SpringApplicationBuilder(StockManagement.class);
-		builder.application().setWebApplicationType(WebApplicationType.NONE);
-		applicationContext =builder.run(getParameters().getRaw().toArray(new String[0]));
-		final List<String> fsImages = PropertyReaderHelper.get(applicationContext.getEnvironment(), "javafx.appicons");
-		if (!fsImages.isEmpty()) {
-			fsImages.forEach((s) -> icons.add(new Image(getClass().getResource(s).toExternalForm())));
-		} else {
-			icons.add(new Image(getClass().getResource("/images/gear_16x16.png").toExternalForm()));
-			icons.add(new Image( getClass().getResource("/images/gear_24x24.png").toExternalForm()));
-			icons.add(new Image(getClass().getResource("/images/gear_36x36.png").toExternalForm()));
-			icons.add(new Image(getClass().getResource("/images/gear_42x42.png").toExternalForm()));
-			icons.add(new Image(getClass().getResource("/images/gear_64x64.png").toExternalForm()));
-		}
+		
+		userService = applicationContext.getBean(UserService.class);
+		languageService = applicationContext.getBean(LanguageService.class);
+
+		initI18N();
+
 	}
+
+	private void initI18N() {
+		Language languageDefault = languageService.findDefaultLanguage();
+
+		if (languageDefault != null) {
+			i18n = new I18N(new Locale(languageDefault.getLanguageCode(), languageDefault.getCountryCode()));
+		} else {
+			i18n = new I18N(I18N.FRENCH);
+		}
+
+	}
+
 	@Override
 	public void stop() {
 		applicationContext.close();
 		Platform.exit();
 
 	}
-	
-	private void showInitialView() {
-		final String stageStyle = applicationContext.getEnvironment().getProperty("javafx.stage.style");
-		if (stageStyle != null) {
-			GUIState.getStage().initStyle(StageStyle.valueOf(stageStyle.toUpperCase()));
-		} else {
-			GUIState.getStage().initStyle(StageStyle.DECORATED);
-		}
-		showView(MainView.class);
-	}
 
-	public static void showView(final Class<? extends AbstractFxmlView> newView) {
-		try {
-			final AbstractFxmlView view = applicationContext.getBean(newView);
-
-			if (GUIState.getScene() == null) {
-				GUIState.setScene(new Scene(view.getView()));
-			} else {
-				GUIState.getScene().setRoot(view.getView());
-			}
-			GUIState.getStage().setScene(GUIState.getScene());
-			applyEnvPropsToView();
-			GUIState.getStage().getIcons().addAll(icons);
-			GUIState.getStage().addEventHandler(WindowEvent.WINDOW_SHOWN, e -> {
-				if (view.getFxmlLoader().getController() instanceof MainController) {
-					MainController mainController = (MainController) view.getFxmlLoader().getController();
-					mainController.onWindowShownEvent();
-				}
-				log.debug("Stage view shown: {} ", view.getClass());
-			});
-			GUIState.getStage().show();
-		} catch (Throwable t) {
-			log.error("Failed to load application: ", t);
-			showErrorAlert(t);
-		}
-	}
-	
-	private static void applyEnvPropsToView() {
-		PropertyReaderHelper.setIfPresent(applicationContext.getEnvironment(), "javafx.title", String.class, GUIState.getStage()::setTitle);
-		PropertyReaderHelper.setIfPresent(applicationContext.getEnvironment(), "javafx.stage.width", Double.class, GUIState.getStage()::setWidth);
-		PropertyReaderHelper.setIfPresent(applicationContext.getEnvironment(), "javafx.stage.height", Double.class, GUIState.getStage()::setHeight);
-		PropertyReaderHelper.setIfPresent(applicationContext.getEnvironment(), "javafx.stage.resizable", Boolean.class, GUIState.getStage()::setResizable);
-	}	
-
-	private static void showErrorAlert(Throwable throwable) {
-		Alert alert = new Alert(AlertType.ERROR, "Oops! An unrecoverable error occurred.\n"  + "Please contact your software vendor.\n\n" + "The application will stop now.");
-		alert.showAndWait().ifPresent(response -> Platform.exit());
-	}
 	static class StageReadyEvent extends ApplicationEvent {
 
 		/**
