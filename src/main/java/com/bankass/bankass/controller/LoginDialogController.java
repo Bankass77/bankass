@@ -52,10 +52,12 @@ public class LoginDialogController extends BaseController {
 
 		WebEngine webEngine = webView.getEngine();
 
-		System.setProperty("http.proxyHost", "proxy.inf.bndes.net");
-		System.setProperty("http.proxyPort", "8080");
-		System.setProperty("https.proxyHost", "proxy.inf.bndes.net");
-		System.setProperty("https.proxyPort", "8080");
+		
+		  System.setProperty("http.proxyHost", "proxy.inf.bndes.net");
+		  System.setProperty("http.proxyPort", "8080");
+		  System.setProperty("https.proxyHost", "proxy.inf.bndes.net");
+		  System.setProperty("https.proxyPort", "8080");
+		 
 
 		webEngine.load("https://google.com");
 

@@ -43,7 +43,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <Label layoutX="20.0" layoutY="100.0" text="Tiago Henrique" textFill="WHITE">
+            <Label layoutX="20.0" layoutY="100.0" text="Guindo Abdoulaye" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>

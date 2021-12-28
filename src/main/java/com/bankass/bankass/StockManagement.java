@@ -2,8 +2,7 @@ package com.bankass.bankass;
 
 import java.util.Locale;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -28,7 +27,6 @@ public class StockManagement extends Application {
 	public static I18N i18n;
 	public static HostServices hostServices;
 
-	
 	private UserService userService;
 	private LanguageService languageService;
 
@@ -40,7 +38,7 @@ public class StockManagement extends Application {
 		userService.finUserSignIn(e -> {
 			try {
 				User user = (User) e.getSource().getValue();
-				
+
 				log.debug("User is :{}", user);
 
 				if (user == null) {
@@ -64,7 +62,7 @@ public class StockManagement extends Application {
 	 */
 	@Override
 	public void init() {
-		
+		applicationContext = new SpringApplicationBuilder(BankassApplication.class).run();
 		userService = applicationContext.getBean(UserService.class);
 		languageService = applicationContext.getBean(LanguageService.class);
 
@@ -109,7 +107,4 @@ public class StockManagement extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 }

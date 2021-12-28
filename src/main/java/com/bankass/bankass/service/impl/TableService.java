@@ -1,7 +1,5 @@
 package com.bankass.bankass.service.impl;
 
-
-
 import com.bankass.bankass.utils.ITableServiceCreator;
 
 import javafx.application.Platform;
@@ -10,7 +8,7 @@ import javafx.concurrent.Task;
 
 public class TableService extends Service<Void> {
 
-	private ITableServiceCreator  creator;
+	private ITableServiceCreator creator;
 
 	public TableService(ITableServiceCreator creator) {
 		this.creator = creator;

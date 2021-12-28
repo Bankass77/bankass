@@ -17,6 +17,7 @@ import com.jfoenix.validation.base.ValidatorBase;
 
 import javafx.scene.control.TextField;
 
+@SuppressWarnings("deprecation")
 public class ValidatorUtils {
 
 	public static RequiredFieldValidator addRequiredValidator(JFXTextField textField, String message) {

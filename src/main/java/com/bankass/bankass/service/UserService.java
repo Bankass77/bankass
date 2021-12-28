@@ -22,4 +22,7 @@ public interface UserService extends IBaseService<User> {
 			EventHandler<WorkerStateEvent> beforeStart);
 
 	Service<Void> setUserAsSignOut(EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart);
+	
+	Service<User> Signup(User user, EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart)
+			throws Exception;
 }

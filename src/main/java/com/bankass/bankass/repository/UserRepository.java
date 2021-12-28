@@ -16,21 +16,22 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("SELECT COUNT(u) FROM User u")
 	Long getTotalUsers();
 
-	@Query("SELECT u FROM User u where u.isLogin = 'True'")
+	@Query("SELECT u FROM User u where u.isLogin ='true' ")
 	User finUserSignIn();
 
-	@Modifying(clearAutomatically = true)
+	@Modifying(clearAutomatically =true)
 	@Transactional
-	@Query("UPDATE User SET isLogin = 'True' where email =:email and password = :password")
+	@Query("UPDATE User SET isLogin ='true' where email =:email and password = :password")
 	void setUserAsSignIn(@Param("email") String email, @Param("password") String password);
 
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("UPDATE User SET isLogin = 'False' where isLogin = 'True'")
+	@Query("UPDATE User SET isLogin = 'false' where isLogin ='true'")
 	void setUserAsSignOut();
 
 	User findByEmail(String email);
 
 	User findByEmailAndPassword(String email, String password);
+
 
 }

@@ -2,7 +2,9 @@ package com.bankass.bankass.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.bankass.bankass.model.Employee;
 import com.bankass.bankass.model.Product;
@@ -15,8 +17,8 @@ import com.bankass.bankass.model.dto.SupplierReportDto;
 
 public class EntityReportFactory {
 
-	public static List<SalesReportDto> createSales(List<Sale> sales) {
-		List<SalesReportDto> salesReport = new ArrayList<>();
+	public static Set<SalesReportDto> createSales(Set<Sale> sales) {
+		Set<SalesReportDto> salesReport = new HashSet<>();
 
 		for (Sale sale : sales) {
 			salesReport.add(createSale(sale));
@@ -42,8 +44,8 @@ public class EntityReportFactory {
 		return SalesReportDto;
 	}
 
-	public static List<ProductReportDto> createProducts(List<Product> products) {
-		List<ProductReportDto> productsReport = new ArrayList<>();
+	public static Set<ProductReportDto> createProducts(Set<Product> products) {
+		Set<ProductReportDto> productsReport = new HashSet();
 
 		for (Product p : products) {
 			productsReport.add(createProduct(p));
@@ -66,8 +68,8 @@ public class EntityReportFactory {
 		return ProductReportDto;
 	}
 
-	public static List<EmployeeReportDto> createEmployees(List<Employee> employees) {
-		List<EmployeeReportDto> employeeReport = new ArrayList<>();
+	public static Set<EmployeeReportDto> createEmployees(Set<Employee> employees) {
+		Set<EmployeeReportDto> employeeReport = new HashSet<>();
 
 		for (Employee e : employees) {
 			employeeReport.add(createEmployee(e));
@@ -89,8 +91,8 @@ public class EntityReportFactory {
 		return EmployeeReportDto;
 	}
 
-	public static List<SupplierReportDto> createSuppliers(List<Supplier> suppliers) {
-		List<SupplierReportDto> supplierReport = new ArrayList<>();
+	public static Set<SupplierReportDto> createSuppliers(Set<Supplier> suppliers) {
+		Set<SupplierReportDto> supplierReport = new HashSet<>();
 
 		for (Supplier s : suppliers) {
 			supplierReport.add(createSupplier(s));

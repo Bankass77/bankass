@@ -1,6 +1,5 @@
 package com.bankass.bankass.controller;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,36 +23,36 @@ import javafx.stage.Stage;
 
 @Controller
 public class DashboardController extends BaseController {
-	
+
 	public static final String PATH_FXML = "/fxml/dashboard.fxml";
 	public static final String DASHBOARD_TITLE_KEY = "dashboard.title";
 	public static final String PATH_ICON = WindowsUtils.ICON_APP_PATH;
-	
+
 	@FXML
 	private LineChart<String, Number> salesChart;
 
 	@FXML
 	private Label usersLabel;
-	
+
 	@FXML
 	private Label salesLabel;
-	
+
 	@FXML
 	private Label employeesLabel;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private SaleService saleService;
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@Override
 	public <T> void init(Stage stage, HashMap<String, T> parameters) {
 		super.init(stage, parameters);
-		
+
 		configureSalesChart();
 		configureLabels();
 	}
@@ -64,75 +63,74 @@ public class DashboardController extends BaseController {
 		saleService.onClose();
 		employeeService.onClose();
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void configureSalesChart() {
 		SimpleDateFormat month = new SimpleDateFormat("MMM-yyyy");
-		
+
 		salesChart.getXAxis().setLabel(getI18N().getString("date.month"));
-        
+
 		XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-        series.setName(getI18N().getString("sales.pathTitle"));
-        
-        List<Calendar> allMonths = new ArrayList<>();
-        
+		series.setName(getI18N().getString("sales.pathTitle"));
+
+		List<Calendar> allMonths = new ArrayList<>();
+
 		try {
 			allMonths = getLast12Months();
 		} catch (ParseException e1) {
 		}
-        
-		
-		
-        for (Calendar calendar : allMonths) {
-        	System.out.println(calendar.getTime().toString());
-        	System.out.println(saleService.getTotalSalesByMonth(calendar));
-        	series.getData().add(new XYChart.Data(month.format(calendar.getTime()), saleService.getTotalSalesByMonth(calendar)));
-        }
-        
-        salesChart.getData().add(series);
+
+		for (Calendar calendar : allMonths) {
+			System.out.println(calendar.getTime().toString());
+			System.out.println(saleService.getTotalSalesByMonth(calendar));
+			series.getData().add(
+					new XYChart.Data(month.format(calendar.getTime()), saleService.getTotalSalesByMonth(calendar)));
+		}
+
+		salesChart.getData().add(series);
 	}
-	
+
 	private List<Calendar> getLast12Months() throws ParseException {
 		List<Calendar> allDates = new ArrayList<>();
-		
+
 		Calendar cal = Calendar.getInstance();
 		allDates.add(Calendar.getInstance());
-		
+
 		for (int i = 1; i <= 12; i++) {
 			Calendar c = Calendar.getInstance();
-		    cal.add(Calendar.MONTH, -1);
-		    c.setTime(cal.getTime());
-		    allDates.add(c);
+			cal.add(Calendar.MONTH, -1);
+			c.setTime(cal.getTime());
+			allDates.add(c);
 		}
-		
+
 		return reverse(allDates);
 	}
-	
+
 	public List<Calendar> reverse(List<Calendar> list) {
-	    for(int i = 0, j = list.size() - 1; i < j; i++) {
-	        list.add(i, list.remove(j));
-	    }
-	    
-	    return list;
+		for (int i = 0, j = list.size() - 1; i < j; i++) {
+			list.add(i, list.remove(j));
+		}
+
+		return list;
 	}
-	
+
 	private void configureLabels() {
-		
+
 		userService.getTotalUsers(e -> {
 			configureLabel(usersLabel, (Long) e.getSource().getValue());
 		}, null);
-		
+
 		saleService.getTotalSales(e -> {
-			configureLabel(salesLabel, (Long) e.getSource().getValue());		
+			configureLabel(salesLabel, (Long) e.getSource().getValue());
 		}, null);
-		
+
 		employeeService.getTotalEmployees(e -> {
 			configureLabel(employeesLabel, (Long) e.getSource().getValue());
 		}, null);
 	}
-	
+
 	private void configureLabel(Label label, long value) {
 		WindowsUtils.setTextInLabel(label, String.valueOf(value));
 	}
-	
+
 }

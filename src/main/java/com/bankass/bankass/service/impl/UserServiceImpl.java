@@ -98,4 +98,19 @@ public class UserServiceImpl extends BaseCrudService<User, JpaRepository<User, L
 		}, onSucess, beforeStart);
 	}
 
+	@Override
+	public javafx.concurrent.Service<User> Signup(User user, EventHandler<WorkerStateEvent> onSucess,
+			EventHandler<WorkerStateEvent> beforeStart) throws Exception {
+
+		return createService(new Task<User>() {
+
+			@Override
+			protected User call() throws Exception {
+
+				return userRepository.save(user);
+			}
+		}, onSucess, beforeStart);
+
+	}
+
 }

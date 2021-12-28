@@ -1,5 +1,6 @@
 package com.bankass.bankass.controller;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -374,7 +375,7 @@ public class ReportsController extends BaseController {
 		return salesTableDto;
 	}
 
-	private <T> void createReport(List<T> data, String reportTemplatePath, JFXButton reportGenerate,
+	private <T> void createReport(Set<T> data, String reportTemplatePath, JFXButton reportGenerate,
 			JFXSpinner spinner) {
 		reportsService.createJasperPrint(reportTemplatePath, data, e -> {
 			reportGenerate.setDisable(false);
@@ -404,7 +405,7 @@ public class ReportsController extends BaseController {
 	public void salesReport() throws Exception {
 
 		saleService.findAll(e -> {
-			createReport(EntityReportFactory.createSales((List<Sale>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createSales((Set<Sale>) e.getSource().getValue()),
 					"/reports/sales_template.jrxml", salesReportGenerate, salesSpinner);
 		}, null);
 	}
@@ -412,7 +413,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void productsReport() throws Exception {
 		productService.findAll(e -> {
-			createReport(EntityReportFactory.createProducts((List<Product>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createProducts((Set<Product>) e.getSource().getValue()),
 					"/reports/products_template.jrxml", productsReportGenerate, productsSpinner);
 		}, null);
 	}
@@ -420,7 +421,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void employeesReport() throws Exception {
 		employeeService.findAll(e -> {
-			createReport(EntityReportFactory.createEmployees((List<Employee>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createEmployees((Set<Employee>) e.getSource().getValue()),
 					"/reports/employees_template.jrxml", employeesReportGenerate, employeesSpinner);
 		}, null);
 	}
@@ -428,7 +429,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void suppliersReport() throws Exception {
 		supplierService.findAll(e -> {
-			createReport(EntityReportFactory.createSuppliers((List<Supplier>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createSuppliers((Set<Supplier>) e.getSource().getValue()),
 					"/reports/suppliers_template.jrxml", supplierReportGenerate, suppliersSpinner);
 		}, null);
 	}
