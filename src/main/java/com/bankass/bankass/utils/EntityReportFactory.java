@@ -17,8 +17,8 @@ import com.bankass.bankass.model.dto.SupplierReportDto;
 
 public class EntityReportFactory {
 
-	public static Set<SalesReportDto> createSales(Set<Sale> sales) {
-		Set<SalesReportDto> salesReport = new HashSet<>();
+	public static List<SalesReportDto> createSales(List<Sale> sales) {
+		List<SalesReportDto> salesReport = new ArrayList<>();
 
 		for (Sale sale : sales) {
 			salesReport.add(createSale(sale));
@@ -44,8 +44,8 @@ public class EntityReportFactory {
 		return SalesReportDto;
 	}
 
-	public static Set<ProductReportDto> createProducts(Set<Product> products) {
-		Set<ProductReportDto> productsReport = new HashSet();
+	public static List<ProductReportDto> createProducts(List<Product> products) {
+		List<ProductReportDto> productsReport = new ArrayList<>();
 
 		for (Product p : products) {
 			productsReport.add(createProduct(p));
@@ -68,8 +68,8 @@ public class EntityReportFactory {
 		return ProductReportDto;
 	}
 
-	public static Set<EmployeeReportDto> createEmployees(Set<Employee> employees) {
-		Set<EmployeeReportDto> employeeReport = new HashSet<>();
+	public static List<EmployeeReportDto> createEmployees(List<Employee> employees) {
+		List<EmployeeReportDto> employeeReport = new ArrayList<>();
 
 		for (Employee e : employees) {
 			employeeReport.add(createEmployee(e));
@@ -91,8 +91,8 @@ public class EntityReportFactory {
 		return EmployeeReportDto;
 	}
 
-	public static Set<SupplierReportDto> createSuppliers(Set<Supplier> suppliers) {
-		Set<SupplierReportDto> supplierReport = new HashSet<>();
+	public static List<SupplierReportDto> createSuppliers(List<Supplier> suppliers) {
+		List<SupplierReportDto> supplierReport = new ArrayList<>();
 
 		for (Supplier s : suppliers) {
 			supplierReport.add(createSupplier(s));

@@ -3,7 +3,6 @@ package com.bankass.bankass.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +72,7 @@ public class SalesController extends BaseController {
 		return (StackPane) scene.lookup("#container");
 	}
 
-	public Service<Set<Sale>> getSales(TypeSaleTable type, EventHandler<WorkerStateEvent> onSucess,
+	public Service<List<Sale>> getSales(TypeSaleTable type, EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
 
 		switch (type) {

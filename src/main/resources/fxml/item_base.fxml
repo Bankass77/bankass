@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="itemContainer" prefHeight="61.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankass.bankass.controller.ItemBaseController">
+<Pane fx:id="itemContainer" prefHeight="61.0" prefWidth="709.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankass.bankass.controller.ItemBaseController">
    <children>
       <JFXComboBox fx:id="itemsComboBox" focusColor="#009688" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="202.0" promptText="Item" />
       <JFXTextField fx:id="quantityTextField" accessibleHelp="Auto" focusColor="#009688" labelFloat="true" layoutX="232.0" layoutY="14.0" prefHeight="25.0" prefWidth="90.0" promptText="Quantity">

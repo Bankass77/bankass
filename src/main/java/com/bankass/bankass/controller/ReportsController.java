@@ -1,12 +1,9 @@
 package com.bankass.bankass.controller;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -248,7 +245,7 @@ public class ReportsController extends BaseController {
 		TableUtils.setupColumn(productDescriptionColumn, ProductTableDto::getDescription);
 
 		productService.findAll(e -> {
-			TableUtils.configureTable((Set<Product>) e.getSource().getValue(), productsData, productsTable,
+			TableUtils.configureTable((List<Product>) e.getSource().getValue(), productsData, productsTable,
 					productsPagination, en -> createProductData(en));
 		}, null);
 	}
@@ -260,7 +257,7 @@ public class ReportsController extends BaseController {
 		TableUtils.setupColumn(employeeCpfColumn, EmployeeTableDto::getCpf);
 
 		employeeService.findAll(e -> {
-			TableUtils.configureTable((Set<Employee>) e.getSource().getValue(), employeesData, employeesTable,
+			TableUtils.configureTable((List<Employee>) e.getSource().getValue(), employeesData, employeesTable,
 					employeesPagination, en -> createEmployeeData(en));
 		}, null);
 	}
@@ -271,7 +268,7 @@ public class ReportsController extends BaseController {
 		TableUtils.setupColumn(supplierAddresColumn, SupplierTableDto::getAdress);
 
 		supplierService.findAll(e -> {
-			TableUtils.configureTable((Set<Supplier>) e.getSource().getValue(), suppliersData, suppliersTable,
+			TableUtils.configureTable((List<Supplier>) e.getSource().getValue(), suppliersData, suppliersTable,
 					suppliersPagination, en -> createSupplierData(en));
 		}, null);
 	}
@@ -285,7 +282,7 @@ public class ReportsController extends BaseController {
 		TableUtils.setupColumn(saleTotalColumn, SalesTableDto::getTotal);
 
 		saleService.findAll(e -> {
-			TableUtils.configureTable((Set<Sale>) e.getSource().getValue(), salesData, salesTable, salesPagination,
+			TableUtils.configureTable((List<Sale>) e.getSource().getValue(), salesData, salesTable, salesPagination,
 					en -> createSaleData(en));
 		}, null);
 	}
@@ -293,14 +290,14 @@ public class ReportsController extends BaseController {
 	private EmployeeTableDto createEmployeeData(Employee employee) {
 		EmployeeTableDto em = new EmployeeTableDto();
 
-		em.setName( new SimpleStringProperty(employee.getUser().getName()));
-		em.setEmail( new SimpleStringProperty(employee.getUser().getEmail()));
-		em.setCpf( new SimpleStringProperty(employee.getCpf()));
+		em.setName(new SimpleStringProperty(employee.getUser().getName()));
+		em.setEmail(new SimpleStringProperty(employee.getUser().getEmail()));
+		em.setCpf(new SimpleStringProperty(employee.getCpf()));
 
 		if (employee.getAddress() != null) {
-			em.setAdress( new SimpleStringProperty(employee, employee.getAddress().toString()));
+			em.setAdress(new SimpleStringProperty(employee, employee.getAddress().toString()));
 		} else {
-			em.setAdress( new SimpleStringProperty("--"));
+			em.setAdress(new SimpleStringProperty("--"));
 		}
 
 		em.setOriginalEmployee(employee);
@@ -322,9 +319,9 @@ public class ReportsController extends BaseController {
 		}
 
 		if (product.getProductType() != null) {
-			productTableDto.setProductType( new SimpleStringProperty(product.getProductType().getName()));
+			productTableDto.setProductType(new SimpleStringProperty(product.getProductType().getName()));
 		} else {
-			productTableDto.setProductType( new SimpleStringProperty("--"));
+			productTableDto.setProductType(new SimpleStringProperty("--"));
 		}
 
 		productTableDto.setOriginalProduct(product);
@@ -335,13 +332,13 @@ public class ReportsController extends BaseController {
 	private SupplierTableDto createSupplierData(Supplier supplier) {
 		SupplierTableDto supplierTableDto = new SupplierTableDto();
 
-		supplierTableDto.setCompanyName( new SimpleStringProperty(supplier.getCompanyName()));
-		supplierTableDto.setEmail(  new SimpleStringProperty(supplier.getEmail()));
+		supplierTableDto.setCompanyName(new SimpleStringProperty(supplier.getCompanyName()));
+		supplierTableDto.setEmail(new SimpleStringProperty(supplier.getEmail()));
 
 		if (supplier.getAddres() != null) {
-			supplierTableDto.setAdress(new SimpleStringProperty(supplier.getAddres(), null) );
+			supplierTableDto.setAdress(new SimpleStringProperty(supplier.getAddres(), null));
 		} else {
-			supplierTableDto.setAdress( new SimpleStringProperty("--"));
+			supplierTableDto.setAdress(new SimpleStringProperty("--"));
 		}
 
 		supplierTableDto.setOriginalSupplier(supplier);
@@ -354,7 +351,7 @@ public class ReportsController extends BaseController {
 		SalesTableDto salesTableDto = new SalesTableDto();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		salesTableDto.setCode( new SimpleStringProperty(sale.getSaleCode()));
+		salesTableDto.setCode(new SimpleStringProperty(sale.getSaleCode()));
 
 		if (sale.getCliente() != null) {
 			salesTableDto.setClient(new SimpleStringProperty(sale.getCliente().getUser().getName()));
@@ -365,17 +362,17 @@ public class ReportsController extends BaseController {
 		}
 
 		if (sale.getIssueDate() != null) {
-			salesTableDto.setIssueDate( new SimpleStringProperty( formatter.format(sale.getIssueDate())));
+			salesTableDto.setIssueDate(new SimpleStringProperty(formatter.format(sale.getIssueDate())));
 		}
 
 		salesTableDto.setTotalUnits(new SimpleStringProperty(String.valueOf(sale.getTotalUnits())));
-		salesTableDto.setTotal( new SimpleStringProperty(String.valueOf(sale.getTotal())));
+		salesTableDto.setTotal(new SimpleStringProperty(String.valueOf(sale.getTotal())));
 		salesTableDto.setOriginalObject(sale);
 
 		return salesTableDto;
 	}
 
-	private <T> void createReport(Set<T> data, String reportTemplatePath, JFXButton reportGenerate,
+	private <T> void createReport(List<T> data, String reportTemplatePath, JFXButton reportGenerate,
 			JFXSpinner spinner) {
 		reportsService.createJasperPrint(reportTemplatePath, data, e -> {
 			reportGenerate.setDisable(false);
@@ -405,7 +402,7 @@ public class ReportsController extends BaseController {
 	public void salesReport() throws Exception {
 
 		saleService.findAll(e -> {
-			createReport(EntityReportFactory.createSales((Set<Sale>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createSales((List<Sale>) e.getSource().getValue()),
 					"/reports/sales_template.jrxml", salesReportGenerate, salesSpinner);
 		}, null);
 	}
@@ -413,7 +410,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void productsReport() throws Exception {
 		productService.findAll(e -> {
-			createReport(EntityReportFactory.createProducts((Set<Product>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createProducts((List<Product>) e.getSource().getValue()),
 					"/reports/products_template.jrxml", productsReportGenerate, productsSpinner);
 		}, null);
 	}
@@ -421,7 +418,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void employeesReport() throws Exception {
 		employeeService.findAll(e -> {
-			createReport(EntityReportFactory.createEmployees((Set<Employee>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createEmployees((List<Employee>) e.getSource().getValue()),
 					"/reports/employees_template.jrxml", employeesReportGenerate, employeesSpinner);
 		}, null);
 	}
@@ -429,7 +426,7 @@ public class ReportsController extends BaseController {
 	@FXML
 	public void suppliersReport() throws Exception {
 		supplierService.findAll(e -> {
-			createReport(EntityReportFactory.createSuppliers((Set<Supplier>) e.getSource().getValue()),
+			createReport(EntityReportFactory.createSuppliers((List<Supplier>) e.getSource().getValue()),
 					"/reports/suppliers_template.jrxml", supplierReportGenerate, suppliersSpinner);
 		}, null);
 	}

@@ -2,7 +2,7 @@ package com.bankass.bankass.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.persistence.Column;
@@ -87,13 +87,13 @@ public class Sale  implements Serializable{
 	private Client cliente;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Item> items;
+	private List<Item> items;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "sale_tag",
 	   joinColumns = @JoinColumn(name = "sale_id"),
 	   inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	private Set<Tag> tags;
+	private List<Tag> tags;
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss"); 
 

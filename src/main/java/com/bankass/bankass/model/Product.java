@@ -2,6 +2,7 @@ package com.bankass.bankass.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -99,13 +100,13 @@ public class Product implements Serializable {
 	private ProductType productType;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Image> images;
+	private List<Image> images;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "product_tag",
 	   joinColumns = @JoinColumn(name = "product_id"),
 	   inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	private Set<Tag> tags;
+	private List<Tag> tags;
 	
 	
 	

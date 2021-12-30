@@ -2,6 +2,7 @@ package com.bankass.bankass.utils;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 import com.bankass.bankass.model.Address;
 import com.bankass.bankass.model.Brand;
@@ -38,12 +39,12 @@ public class EntityFactory {
 		return supplier;
 	}
 
-	public static Employee createEmployee(String cpf, User user, Address address, Set<Phone> phones) {
+	public static Employee createEmployee(String cpf, User user, Address address, List<Phone> phones) {
 		return createEmployee(new Employee(), cpf, user, address, phones);
 	}
 
 	public static Employee createEmployee(Employee employee, String cpf, User user, Address address,
-			Set<Phone> phones) {
+			List<Phone> phones) {
 
 		if (employee == null) {
 			employee = new Employee();
@@ -59,8 +60,8 @@ public class EntityFactory {
 
 	public static Product createProduct(String sku, String name, String description, double initialCostPrice,
 			double buyPrice, double wholesalePrice, double retailPrice, double weight, double initialStock,
-			LocalDateTime createdAt, LocalDateTime upLocalDateTimedAt, Supplier supplier, Brand brand, ProductType productType, Set<Image> images,
-			Set<Tag> tags) {
+			LocalDateTime createdAt, LocalDateTime upLocalDateTimedAt, Supplier supplier, Brand brand, ProductType productType, List<Image> images,
+			List<Tag> tags) {
 		return createProduct(new Product(), sku, name, description, initialCostPrice, buyPrice, wholesalePrice,
 				retailPrice, weight, initialStock, createdAt, upLocalDateTimedAt, supplier, brand, productType, images, tags);
 	}
@@ -68,7 +69,7 @@ public class EntityFactory {
 	public static Product createProduct(Product product, String sku, String name, String description,
 			double initialCostPrice, double buyPrice, double wholesalePrice, double retailPrice, double weight,
 			double initialStock, LocalDateTime createdAt, LocalDateTime upLocalDateTimedAt, Supplier supplier, Brand brand,
-			ProductType productType, Set<Image> images, Set<Tag> tags) {
+			ProductType productType, List<Image> images, List<Tag> tags) {
 
 		if (product == null) {
 			product = new Product();
@@ -115,14 +116,14 @@ public class EntityFactory {
 
 	public static Sale createSale(String saleCode, Calendar issueLocalDateTime, Calendar shipmentLocalDateTime, String reference,
 			String email, String message, String state, int totalUnits, double total, Phone Phone, Client cliente,
-			Set<Item> items, Set<Tag> tags) {
+			List<Item> items, List<Tag> tags) {
 		return createSale(new Sale(), saleCode, issueLocalDateTime, shipmentLocalDateTime, reference, email, message, state, totalUnits,
 				total, Phone, cliente, items, tags);
 	}
 
 	public static Sale createSale(Sale sale, String saleCode, Calendar issueLocalDateTime, Calendar shipmentLocalDateTime,
 			String reference, String email, String message, String state, int totalUnits, double total, Phone Phone,
-			Client cliente, Set<Item> items, Set<Tag> tags) {
+			Client cliente, List<Item> items, List<Tag> tags) {
 
 		if (sale == null) {
 			sale = new Sale();
@@ -144,13 +145,13 @@ public class EntityFactory {
 		return sale;
 	}
 
-	public static Client createClient(String cpf, ClientType clientType, Address address, Set<Phone> phones,
+	public static Client createClient(String cpf, ClientType clientType, Address address, List<Phone> phones,
 			User user) {
 		return createClient(new Client(), cpf, clientType, address, phones, user);
 	}
 
 	public static Client createClient(Client client, String cpf, ClientType clientType, Address address,
-			Set<Phone> phones, User user) {
+			List<Phone> phones, User user) {
 
 		if (client == null) {
 			client = new Client();
@@ -214,7 +215,7 @@ public class EntityFactory {
 		return address;
 	}
 
-	public static User createUser(String email, String name, String photoPath, String password, Set<Role> role) {
+	public static User createUser(String email, String name, String photoPath, String password, List<Role> role) {
 		User user = new User();
 
 		user.setName(name);

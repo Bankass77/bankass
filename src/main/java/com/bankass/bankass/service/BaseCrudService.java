@@ -1,12 +1,8 @@
 package com.bankass.bankass.service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.bankass.bankass.service.BaseService;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -37,12 +33,12 @@ public abstract class BaseCrudService<T, R extends JpaRepository<T, Long>> exten
 
 	}
 
-	public Service<Set<T>> findAll(EventHandler<WorkerStateEvent> onSucess,
+	public Service<List<T>> findAll(EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
-		return createService(new Task<Set<T>>() {
-			protected Set<T> call() throws Exception {
+		return createService(new Task<List<T>>() {
+			protected List<T> call() throws Exception {
 				List<T> allLis= repository.findAll();
-				return new HashSet<>(allLis);
+				return allLis;
 			};
 		}, onSucess, beforeStart);
 	}

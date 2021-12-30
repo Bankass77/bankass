@@ -4,7 +4,6 @@ import javafx.application.Preloader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class Screen extends Preloader {
 
@@ -15,7 +14,6 @@ public class Screen extends Preloader {
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
-		this.stage.initStyle(StageStyle.UNDECORATED);
 		this.stage.setScene(createScene());
 		this.stage.show();
 	}

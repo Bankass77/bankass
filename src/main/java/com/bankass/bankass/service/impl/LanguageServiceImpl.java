@@ -1,7 +1,5 @@
 package com.bankass.bankass.service.impl;
 
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +13,14 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
 @Service("languageService")
-public class LanguageServiceImpl extends BaseCrudService<Language, JpaRepository<Language,Long>> implements LanguageService {
-	
+public class LanguageServiceImpl extends BaseCrudService<Language, JpaRepository<Language, Long>>
+		implements LanguageService {
+
 	private LanguageRepository languageRepository;
-	
+
 	public LanguageServiceImpl(LanguageRepository repository) {
 		super(repository);
-		
+
 		this.languageRepository = repository;
 	}
 
@@ -42,19 +41,19 @@ public class LanguageServiceImpl extends BaseCrudService<Language, JpaRepository
 			};
 		}, onSucess, beforeStart);
 	}
-	
+
 	@Override
 	public Language findDefaultLanguage() {
 		return languageRepository.findDefaultLanguage();
 	}
-	
+
 	@Override
 	public javafx.concurrent.Service<Void> cleanLanguageDefault(EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
 		return createService(new Task<Void>() {
 			protected Void call() throws Exception {
 				languageRepository.cleanLanguageDefault();
-				
+
 				return null;
 			};
 		}, onSucess, beforeStart);
@@ -66,25 +65,25 @@ public class LanguageServiceImpl extends BaseCrudService<Language, JpaRepository
 		return createService(new Task<Void>() {
 			protected Void call() throws Exception {
 				languageRepository.setLanguageAsDefault(language, country);
-				
+
 				return null;
 			};
 		}, onSucess, beforeStart);
 	}
 
 	@Override
-	public javafx.concurrent.Service<Language> changeDefaultLanguage(Language newDafaultLanguage, EventHandler<WorkerStateEvent> onSucess,
-			EventHandler<WorkerStateEvent> beforeStart) {
+	public javafx.concurrent.Service<Language> changeDefaultLanguage(Language newDafaultLanguage,
+			EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart) {
 		return createService(new Task<Language>() {
 			protected Language call() throws Exception {
-				
+
 				languageRepository.cleanLanguageDefault();
-				languageRepository.setLanguageAsDefault(newDafaultLanguage.getLanguageCode(), newDafaultLanguage.getCountryCode());
-				
+				languageRepository.setLanguageAsDefault(newDafaultLanguage.getLanguageCode(),
+						newDafaultLanguage.getCountryCode());
+
 				return null;
 			};
 		}, onSucess, beforeStart);
 	}
-
 
 }

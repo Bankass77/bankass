@@ -2,7 +2,7 @@ package com.bankass.bankass.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -34,20 +34,20 @@ public class SaleServiceImpl extends BaseCrudService<Sale, JpaRepository<Sale, L
 	}
 
 	@Override
-	public javafx.concurrent.Service<Set<Sale>> findAllOpenSales(EventHandler<WorkerStateEvent> onSucess,
+	public javafx.concurrent.Service<List<Sale>> findAllOpenSales(EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
-		return createService(new Task<Set<Sale>>() {
-			protected Set<Sale> call() throws Exception {
+		return createService(new Task<List<Sale>>() {
+			protected List<Sale> call() throws Exception {
 				return saleRepository.findAllOpenSales();
 			};
 		}, onSucess, beforeStart);
 	}
 
 	@Override
-	public javafx.concurrent.Service<Set<Sale>> findAllFinalizedSales(EventHandler<WorkerStateEvent> onSucess,
+	public javafx.concurrent.Service<List<Sale>> findAllFinalizedSales(EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
-		return createService(new Task<Set<Sale>>() {
-			protected Set<Sale> call() throws Exception {
+		return createService(new Task<List<Sale>>() {
+			protected List<Sale> call() throws Exception {
 				return saleRepository.findAllFinalizedSales();
 			};
 		}, onSucess, beforeStart);
@@ -64,10 +64,10 @@ public class SaleServiceImpl extends BaseCrudService<Sale, JpaRepository<Sale, L
 	}
 
 	@Override
-	public javafx.concurrent.Service<Set<Sale>> findSaleByMonth(Calendar date, EventHandler<WorkerStateEvent> onSucess,
+	public javafx.concurrent.Service<List<Sale>> findSaleByMonth(Calendar date, EventHandler<WorkerStateEvent> onSucess,
 			EventHandler<WorkerStateEvent> beforeStart) {
-		return createService(new Task<Set<Sale>>() {
-			protected Set<Sale> call() throws Exception {
+		return createService(new Task<List<Sale>>() {
+			protected List<Sale> call() throws Exception {
 				if (date != null) {
 					return saleRepository.findSalesByMonth(patternMonth.format(date.getTime()));
 				}

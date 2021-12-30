@@ -1,6 +1,7 @@
 package com.bankass.bankass.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class ProductType implements Serializable {/**
 	private String name;
 	
 	@OneToMany(mappedBy = "productType", fetch = FetchType.LAZY)
-	private Set<Product> product;
+	private List<Product> product;
 	
 	
 	

@@ -1,8 +1,8 @@
 package com.bankass.bankass.controller;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -172,7 +172,7 @@ public class InventoryController extends BaseController {
 
 	private ObservableList<BrandTableDto> brandsData;
 
-	private Set<TableService> tableService;
+	private List<TableService> tableService;
 
 	public <T> void init(Stage stage, HashMap<String, T> parameters) {
 		super.init(stage, parameters);
@@ -190,7 +190,7 @@ public class InventoryController extends BaseController {
 	}
 
 	private void configureTables() {
-		tableService = new HashSet<TableService>();
+		tableService = new ArrayList<TableService>();
 
 		tableService.add(new TableService(() -> configureProductTable()));
 		tableService.add(new TableService(() -> configureEmployeeTable()));
@@ -251,7 +251,7 @@ public class InventoryController extends BaseController {
 		TableUtils.setupColumn(productDescriptionColumn, ProductTableDto::getDescription);
 
 		productService.findAll(e -> {
-			TableUtils.configureTable((Set<Product>) e.getSource().getValue(), productsData, productsTable,
+			TableUtils.configureTable((List<Product>) e.getSource().getValue(), productsData, productsTable,
 					productPagination, en -> createProductData(en));
 		}, null);
 	}
@@ -264,7 +264,7 @@ public class InventoryController extends BaseController {
 		TableUtils.setupColumn(employeeAdressColumn, EmployeeTableDto::getAdress);
 
 		employeeService.findAll(e -> {
-			TableUtils.configureTable((Set<Employee>) e.getSource().getValue(), employeesData, employeeTable,
+			TableUtils.configureTable((List<Employee>) e.getSource().getValue(), employeesData, employeeTable,
 					employeePagination, en -> createEmplyeeData(en));
 		}, null);
 	}
@@ -275,7 +275,7 @@ public class InventoryController extends BaseController {
 		TableUtils.setupColumn(supplierAddresColumn, SupplierTableDto::getAdress);
 
 		supplierService.findAll(e -> {
-			TableUtils.configureTable((Set<Supplier>) e.getSource().getValue(), suppliersData, supplierTable,
+			TableUtils.configureTable((List<Supplier>) e.getSource().getValue(), suppliersData, supplierTable,
 					supplierPagination, en -> createSupplierData(en));
 		}, null);
 	}
@@ -286,7 +286,7 @@ public class InventoryController extends BaseController {
 		TableUtils.setupColumn(brandAdditionalInformationColumn, BrandTableDto::getAdditionalInformation);
 
 		brandService.findAll(e -> {
-			TableUtils.configureTable((Set<Brand>) e.getSource().getValue(), brandsData, brandTable, brandPagination,
+			TableUtils.configureTable((List<Brand>) e.getSource().getValue(), brandsData, brandTable, brandPagination,
 					en -> createBrandData(en));
 		}, null);
 	}

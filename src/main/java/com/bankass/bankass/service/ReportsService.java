@@ -1,6 +1,6 @@
 package com.bankass.bankass.service;
 
-import java.util.Set;
+import java.util.List;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.WorkerStateEvent;
@@ -9,7 +9,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 public interface ReportsService {
 
-	<D> Service<JasperPrint> createJasperPrint(String reportTemplatePath, Set<D> data,
+	<D> Service<JasperPrint> createJasperPrint(String reportTemplatePath, List<D> data,
 			EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart);
 
 	void onClose();

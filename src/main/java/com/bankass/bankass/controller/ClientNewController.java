@@ -1,8 +1,8 @@
 package com.bankass.bankass.controller;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -227,13 +227,13 @@ public class ClientNewController extends BaseController {
 	public void onSave() {
 		ClientType clientType = WindowsUtils.getSelectedComboBoxItem(clientTypeComboBox);
 		Role roleSelected = WindowsUtils.getSelectedComboBoxItem(roleComboBox);
-		Set<Phone> phones = new HashSet<Phone>();
+		List<Phone> phones = new ArrayList<Phone>();
 
 		phones.add(EntityFactory.createPhone(WindowsUtils.getLongFromTextField(cellPhoneTextField)));
 		phones.add(EntityFactory.createPhone(WindowsUtils.getLongFromTextField(residentialPhoneTextField)));
 
 		roleService.findByRole(roleSelected.getRole(), e -> {
-			Set<Role> role = (Set<Role>) e.getSource().getValue();
+			List<Role> role = (List<Role>) e.getSource().getValue();
 
 			User user = EntityFactory.createUser(WindowsUtils.getTextFromTextField(emailTextField),
 					WindowsUtils.getTextFromTextField(nameTextField), null,

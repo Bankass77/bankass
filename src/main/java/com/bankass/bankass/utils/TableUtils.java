@@ -1,7 +1,7 @@
 package com.bankass.bankass.utils;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Function;
 
 import com.bankass.bankass.service.IBaseService;
@@ -39,7 +39,7 @@ public class TableUtils {
 		});
 	}
 
-	public static <T, D extends RecursiveTreeObject<D>> ObservableList<D> filledDataOnTable(Set<T> originalData,
+	public static <T, D extends RecursiveTreeObject<D>> ObservableList<D> filledDataOnTable(List<T> originalData,
 			ITableDataCreator<D, T> onCreator) {
 		final ObservableList<D> data = FXCollections.observableArrayList();
 
@@ -51,7 +51,7 @@ public class TableUtils {
 	}
 
 	public static <T, D extends RecursiveTreeObject<D>, V extends RecursiveTreeObject<?>> void configureTable(
-			Set<T> originalData, ObservableList<D> observableData, JFXTreeTableView<D> table, Pagination pagination,
+			List<T> originalData, ObservableList<D> observableData, JFXTreeTableView<D> table, Pagination pagination,
 			ITableDataCreator<D, T> onCreator) {
 
 		observableData = TableUtils.filledDataOnTable(originalData, onCreator);

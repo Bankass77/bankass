@@ -2,14 +2,12 @@ package com.bankass.bankass.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.bankass.bankass.model.Sale;
-import com.bankass.bankass.model.salesTable;
 import com.bankass.bankass.model.dto.SalesTableDto;
 import com.bankass.bankass.service.SaleService;
 import com.bankass.bankass.service.impl.TableService;
@@ -103,7 +101,7 @@ public class SaleTableController extends BaseController {
 		TableUtils.setupColumn(salesTotalColumn, SalesTableDto::getTotal);
 
 		salesController.getSales(type, e -> {
-			data = TableUtils.filledDataOnTable((Set<Sale>) e.getSource().getValue(), en -> createData(en));
+			data = TableUtils.filledDataOnTable((List<Sale>) e.getSource().getValue(), en -> createData(en));
 
 			TableUtils.configurePagination(salesTable, data, salesPagination);
 		}, null);

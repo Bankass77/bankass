@@ -1,6 +1,6 @@
 package com.bankass.bankass.service.impl;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,9 +36,9 @@ public class RoleServiceImpl extends BaseCrudService<Role, JpaRepository<Role,Lo
 	}
 
 	@Override
-	public javafx.concurrent.Service<Set<Role>> findByRole(String role, EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart) {
-		return createService(new Task<Set<Role>>() {
-			protected Set<Role> call() throws Exception {
+	public javafx.concurrent.Service<List<Role>> findByRole(String role, EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart) {
+		return createService(new Task<List<Role>>() {
+			protected List<Role> call() throws Exception {
 				return roleRepository.findByRole(role);
 			};
 		}, onSucess, beforeStart);

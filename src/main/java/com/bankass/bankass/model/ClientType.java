@@ -1,6 +1,7 @@
 package com.bankass.bankass.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -47,7 +48,7 @@ public class ClientType implements Serializable{
 	private String name;
 	
 	@OneToMany(mappedBy = "clientType", fetch = FetchType.LAZY)
-	private Set<Client> clients;
+	private List<Client> clients;
 	
 
 }

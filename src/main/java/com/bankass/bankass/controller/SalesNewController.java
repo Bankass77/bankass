@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +101,7 @@ public class SalesNewController extends BaseController {
 	private double total;
 
 	private List<ItemBaseController> itemsControllers;
-	private Set<Item> items;
+	private List<Item> items;
 	private Sale sale;
 
 	@Override
@@ -110,11 +109,13 @@ public class SalesNewController extends BaseController {
 		super.init(stage, parameters);
 
 		this.itemsControllers = new ArrayList<>();
-		this.items = new HashSet<>();
+		this.items = new ArrayList<>();
 		this.total = 0;
 
 		shipmentDateDatePicker.setDialogParent(container);
+		shipmentDateDatePicker.setPromptText("Shipment Date");
 		issueDateDatePicker.setDialogParent(container);
+		issueDateDatePicker.setPromptText("Issue Date");
 
 		saleCode.setText("S" + RandomStringUtils.randomAlphanumeric(5));
 

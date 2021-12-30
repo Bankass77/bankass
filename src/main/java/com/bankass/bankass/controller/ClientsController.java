@@ -2,7 +2,7 @@ package com.bankass.bankass.controller;
 
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,7 +118,7 @@ public class ClientsController extends BaseController {
 		TableUtils.setupColumn(typeColumn, ClientTableDto::getType);
 		
 		clientService.findAll(e -> {
-			TableUtils.configureTable((Set<Client>) e.getSource().getValue(), data, clientsTable, clientPagination, en -> createData(en));
+			TableUtils.configureTable((List<Client>) e.getSource().getValue(), data, clientsTable, clientPagination, en -> createData(en));
 		}, null);
 	}
 	

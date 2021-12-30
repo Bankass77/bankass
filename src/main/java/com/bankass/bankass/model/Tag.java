@@ -1,7 +1,7 @@
 package com.bankass.bankass.model;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,9 +47,9 @@ public class Tag implements Serializable {
 	private String name;
 	
 	@ManyToMany(mappedBy = "tags")
-	private Set<Product> products;
+	private List<Product> products;
 	
 	@ManyToMany(mappedBy = "tags")
-	private Set<Sale> sales;
+	private List<Sale> sales;
 
 }

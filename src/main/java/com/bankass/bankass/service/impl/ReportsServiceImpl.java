@@ -1,7 +1,7 @@
 package com.bankass.bankass.service.impl;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import com.bankass.bankass.service.BaseService;
 import com.bankass.bankass.service.ReportsService;
@@ -19,7 +19,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @org.springframework.stereotype.Service("reportsService")
 public class ReportsServiceImpl extends BaseService implements ReportsService {
 
-	public <D> Service<JasperPrint> createJasperPrint(String reportTemplatePath, Set<D> data,
+	public <D> Service<JasperPrint> createJasperPrint(String reportTemplatePath, List<D> data,
 			EventHandler<WorkerStateEvent> onSucess, EventHandler<WorkerStateEvent> beforeStart) {
 
 		return createService(new Task<JasperPrint>() {

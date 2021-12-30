@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import com.bankass.bankass.service.UserService;
 import com.bankass.bankass.utils.WindowsUtils;
+import com.jfoenix.controls.JFXButton;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +23,9 @@ public class RootController extends BaseController {
 
 	@FXML
 	private AnchorPane rootPane;
+	
+	@FXML
+	private JFXButton inventoryButton;
 
 	@Autowired
 	private UserService userService;

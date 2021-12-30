@@ -1,6 +1,7 @@
 package com.bankass.bankass.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,64 +27,50 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-
 @Entity
-@Table(
-		name = "user",
-		indexes = @Index(
-				name = "idx_user_email",
-				columnList = "email",
-				unique = true))
+@Table(name = "user", indexes = @Index(name = "idx_user_email", columnList = "email", unique = true))
 
-@Accessors(
-		chain = true)
+@Accessors(chain = true)
 
-@JsonInclude(
-		value = JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(
-		ignoreUnknown = true)
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Getter
 @Setter
-public class User  implements Serializable{
+public class User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private int id;
-	
-	
+
 	@Column(name = "email", unique = true)
 	private String email;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column(name = "photo_path")
 	private String photoPath;
-	
+
 	@Column(name = "password")
 	private String password;
-	
-	@Column(name="phone")
-	 private String cellphone;
-	
+
+	@Column(name = "phone")
+	private String cellphone;
+
 	@Column(name = "is_login")
 	private int isLogin;
-	
-	@ManyToMany(fetch =FetchType.EAGER,cascade = CascadeType.MERGE)
-	@JoinTable(name = "user_role",
-			   joinColumns = @JoinColumn(name = "user_id"),
-			   inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
-	
-	
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roles;
+
 }

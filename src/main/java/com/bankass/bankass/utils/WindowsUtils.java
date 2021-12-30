@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bankass.bankass.BankassApplication;
 import com.bankass.bankass.StockManagement;
 import com.bankass.bankass.controller.BaseController;
 import com.bankass.bankass.service.IBaseService;
@@ -17,7 +18,6 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -25,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -36,12 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WindowsUtils {
 
-	
-	private static double xOffset = 0;
-	private static double yOffset = 0;
-	public static final String BASE_APPLICATION_CSS_PATH = StockManagement.class.getResource("/css/applications.css")
+
+	public static final String BASE_APPLICATION_CSS_PATH = BankassApplication.class.getResource("/css/applications.css")
 			.toExternalForm();
-	public static final String ICON_APP_PATH = StockManagement.class.getResource("/images/icon.png").toExternalForm();
+	public static final String ICON_APP_PATH = BankassApplication.class.getResource("/images/icon.png").toExternalForm();
 
 	public static <T> void replaceFxmlOnWindow(Pane root, String path, Stage stage, HashMap<String, T> parameters)
 			throws Exception {
@@ -49,29 +46,6 @@ public class WindowsUtils {
 
 		root.getChildren().clear();
 		root.getChildren().add(loader.load());
-		root.setOnMousePressed(new EventHandler<MouseEvent>() {
-			
-			@Override
-			public void handle(MouseEvent event) {
-				try {
-					xOffset=event.getSceneX();
-					yOffset=event.getSceneY();
-				} catch (Exception e) {
-				
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		//move around here
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
-            }
-        });
-
         Scene  scene= new Scene(root);
         stage.setScene(scene);
 		BaseController baseController = loader.getController();
@@ -93,7 +67,7 @@ public class WindowsUtils {
 		stage.getIcons().add(new Image(WindowsUtils.ICON_APP_PATH));
 		stage.setTitle(title);
 		
-		stage.setResizable(true);
+		stage.setResizable(false);
 
 		FXMLLoader loader = loadFxml(fxmlPath);
 
